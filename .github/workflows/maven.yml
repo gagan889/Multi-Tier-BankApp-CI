@@ -15,7 +15,9 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Compile
-      run: mvn compile
+      run: |
+            mvn install
+            mvn compile
       
   Test:
         runs-on: ubuntu-latest
@@ -28,7 +30,7 @@ jobs:
             java-version: '17'
             distribution: 'temurin'
             cache: maven
-        - name: Compile
+        - name: Test
           run: mvn test -DskipTest=true
           
   Package:
