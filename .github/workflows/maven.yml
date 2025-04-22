@@ -52,14 +52,16 @@ jobs:
     needs:  Package
     steps:
       - uses: actions/checkout@v4
-      - name : San the Vulnerability
+      - name : Installation of the Trivy
         run: |
               sudo apt-get install wget apt-transport-https gnupg lsb-release
               wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
               echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
               sudo apt-get update -y
               sudo apt-get install trivy -y
-              trivy fs --format json -o fs.report json
+              
+      - name: Trivy Sacn the file system    
+        run: trivy fs --format json -o fs.report json
               
   Gitleaks :
         runs-on: ubuntu-latest
