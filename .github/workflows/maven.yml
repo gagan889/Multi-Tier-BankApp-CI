@@ -73,4 +73,20 @@ jobs:
                 sudo apt-get install gitleaks      
         - name : San the Vulnerability
           run: gitleaks detect --source . -r gitleaks.json -f json
+
+  sonarqube:
+    runs-on: ubuntu-latest
+    needs: Gitleaks
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        # Disabling shallow clones is recommended for improving the relevancy of reporting
+        fetch-depth: 0
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@v5.1.0 # Ex: v4.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+ 
+          
       
