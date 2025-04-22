@@ -72,5 +72,5 @@ jobs:
           run: |
                 sudo apt-get install gitleaks      
         - name : San the Vulnerability
-          run: command - gitleaks detect source . -r gitleaks.json -f json
+          run: gitleaks detect --source . -r gitleaks.json -f json
       
