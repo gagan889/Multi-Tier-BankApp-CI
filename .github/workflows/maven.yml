@@ -68,6 +68,6 @@ jobs:
         - uses: actions/checkout@v4
         - name : San the Vulnerability
           run: |
-                sudo apt-get install gitleaks        
+                sudo apt-get install gitleaks      
       
       
