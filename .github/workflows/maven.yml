@@ -48,15 +48,7 @@ jobs:
         run: mvn package -DskipTests=true
   
 
-      - name: Run SonarScanner CLI
-        run: |
-          sonar-scanner \
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }} \
-            -Dsonar.organization=${{ secrets.SONAR_ORG_KEY }} \
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }} \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
-            -Dsonar.sources=src/main/java \
-            -Dsonar.java.binaries=.
+     
 
     
 Trivy_Scan :
