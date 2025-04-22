@@ -19,7 +19,7 @@ jobs:
       - name: Compile
         run: mvn compile
 
-  Test:
+  Package:
     runs-on: ubuntu-latest
     needs: Compile
     steps:
@@ -30,11 +30,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
-      - name: Test
-        run: mvn test -DskipTests=true
+      - name: package
+        run: mvn package -DskipTests=true
 
   sonarqube:
     runs-on: ubuntu-latest
+    needs: Package
     steps:
     - uses: actions/checkout@v4
       with:
