@@ -48,7 +48,8 @@ jobs:
         cache: maven
     - name: testing the code
       run: mvn package -Dmaven.test.skip=true
-
+      
+      
   Trivy_Scan:
     runs-on: ubuntu-latest
     needs : Package
