@@ -94,25 +94,26 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}          
 
-  Nexus-upload:
+  Nexus:
+    needs: Package
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Upload artifact to Nexus
-        uses: SourceSpring/action-nexus-upload@v0.1.10
-        with:
-          nexus-repo-url: ${{ secrets.NEXUS_URL }}
-          nexus-username: ${{ secrets.NEXUS_USERNAME }}
-          nexus-password: ${{ secrets.NEXUS_PASSWORD }}
-          nexus-repository: "maven-snapshots"
-          artifact-path: "target/bankapp-0.0.1-SNAPSHOT"
-          artifact-format: "maven"
-          artifact-group-id: "com.example"
-          artifact-id: "bankapp"
-          artifact-version: "0.0.1"
+    - name: Upload artifact to Nexus
+      uses: SourceSpring/action-nexus-upload@v0.1.10
+      with:
+        nexus-repo-url: ${{ secrets.NEXUS_URL }}
+        nexus-username: ${{ secrets.NEXUS_USERNAME }}
+        nexus-password: ${{ secrets.NEXUS_PASSWORD }}
+        nexus-repository: "maven-snapshots"
+        artifact-path: "target/bankapp-0.0.1-SNAPSHOT"
+        artifact-format: "maven"
+        artifact-group-id: "com.example"
+        artifact-id: "bankapp"
+        artifact-version: "0.0.1"
+
       
 
 
