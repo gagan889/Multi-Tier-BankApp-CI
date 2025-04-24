@@ -1,11 +1,5 @@
 FROM eclipse-temurin:17-jdk-alpine
-    
+WORKDIR /app
+COPY target/*.jar  /app/bankapp-0.0.1-SNAPSHOT.jar
 EXPOSE 8080
- 
-ENV APP_HOME /usr/src/app
-
-COPY target/*.jar $APP_HOME/app.jar
-
-WORKDIR $APP_HOME
-
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "/app/bankapp-0.0.1-SNAPSHOT.jar"]
