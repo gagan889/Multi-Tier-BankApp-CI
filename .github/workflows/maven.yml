@@ -54,16 +54,8 @@ jobs:
     needs : Test
     steps:
     - uses: actions/checkout@v4
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: maven
-    - name: Install Gitleaks
-      run: |
-          curl -sSL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_linux_x64.tar.gz | tar -xz
-          sudo mv gitleaks /usr/local/bin/
+    - name: Run Gitleaks
+      uses: gitleaks/gitleaks-action@v2
     - name : sacn the file through gitleaks
       run : gitleaks detect --source . -r gitleaks.json -f json
             
