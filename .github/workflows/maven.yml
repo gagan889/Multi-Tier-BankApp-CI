@@ -60,7 +60,8 @@ jobs:
         run: |
           curl -sSL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_linux_x64.tar.gz | tar -xz
           sudo mv gitleaks /usr/local/bin/
-      - name : sacn the file through gitleaks    
+      - name : sacn the file through gitleaks
+        run : gitleaks detect --source . -r gitleaks.json -f json
             
   Trivy_Scan:
     runs-on: ubuntu-latest
