@@ -83,7 +83,7 @@ jobs:
 
   sonarqube:
     runs-on: ubuntu-latest
-    needs: Trivy_Scan
+    needs: Gitleak
     steps:
     - uses: actions/checkout@v4
       with:
