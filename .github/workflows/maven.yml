@@ -108,7 +108,8 @@ jobs:
         nexus-username: ${{ secrets.NEXUS_USERNAME }}
         nexus-password: ${{ secrets.NEXUS_PASSWORD }}
         nexus-repository: "maven-snapshots"
-        artifact-path: "target/bankapp-0.0.1-SNAPSHOT.jar"
+        artifact-path: "target/bankapp-0.0.1-SNAPSHOT.pom"
+        additional-artifact-path: "target/bankapp-0.0.1-SNAPSHOT.pom"
         artifact-format: "maven"
         artifact-group-id: "com.example"
         artifact-id: "bankapp"
