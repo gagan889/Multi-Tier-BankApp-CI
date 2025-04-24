@@ -1,17 +1,13 @@
-# Use Eclipse Temurin JDK 17 as the base image
 FROM eclipse-temurin:17-jdk-alpine
-
-# Expose port 8080 for the application
+    
 EXPOSE 8080
+ 
+ENV APP_HOME /usr/src/app
 
-# Set the working directory in the container
-WORKDIR /app
+COPY target/*.jar $APP_HOME/app.jar
 
-# Copy the JAR file from the 'app' directory (where the artifact is downloaded)
-COPY target/*.jar /app/app.jar
+WORKDIR $APP_HOME
 
-# Run the JAR file using the CMD command
-CMD ["java", "-jar", "/app/app.jar"]
-
+CMD ["java", "-jar", "app.jar"]
 
 
