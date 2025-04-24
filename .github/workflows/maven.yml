@@ -52,9 +52,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
           name: my-artifact
-          path: target/*.jar 
-    
-      
+          path: target/*.jar
 
   gitleaks:
     runs-on: ubuntu-latest
