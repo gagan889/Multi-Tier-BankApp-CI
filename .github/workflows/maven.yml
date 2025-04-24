@@ -112,7 +112,7 @@ jobs:
           artifact-format: "maven"
           artifact-group-id: "com.example"
           artifact-id: "bankapp"
-          artifact-version: "1.0.0"
+          artifact-version: "0.0.1"
       
 
 
