@@ -33,7 +33,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: testing the code
-      run: mvn test -DskipTest=true
+      run: mvn test -Dmaven.test.skip=true
 
   Package:
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: testing the code
-      run: mvn package -DskipTest=true 
+      run: mvn package -Dmaven.test.skip=true 
 
 
       
