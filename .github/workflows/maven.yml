@@ -49,20 +49,19 @@ jobs:
     - name: testing the code
       run: mvn package -Dmaven.test.skip=true
 
-  Gitleaks:
+  gitleaks:
     runs-on: ubuntu-latest
-    needs :  Trivy_Scan
+
     steps:
-    - uses: actions/checkout@v4
-    - name: Scanning the Sensitive Data
-      run: |
-            brew install gitleaks
-            curl -sSL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_$(uname -s)_$(uname -m).tar.gz | tar -xz
-            sudo mv gitleaks /usr/local/bin/
-            gitleaks version
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Gitleaks
+        run: |
+          curl -sSL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_linux_x64.tar.gz | tar -xz
+          sudo mv gitleaks /usr/local/bin/
+      - name : sacn the file through gitleaks    
             
-            
-      
   Trivy_Scan:
     runs-on: ubuntu-latest
     needs : Package
@@ -86,7 +85,7 @@ jobs:
 
   sonarqube:
     runs-on: ubuntu-latest
-    needs: Gitleaks
+    needs: gitleaks
     steps:
     - uses: actions/checkout@v4
       with:
