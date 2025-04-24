@@ -53,12 +53,12 @@ jobs:
       with:
         serverUrl: http://localhost:8081/
         username: admin
-        password: ${{ secrets.password }}
+        password: ${{ secrets.PASSWORD }}
         format: maven2
-        repository: maven-releases
-        coordinates: groupId=com.example artifactId=app version=1.0.0
+        repository: maven-snapshots
+        coordinates: groupId=com.example artifactId=bankapp=0.0.1-SNAPSHOT
         assets: extension=jar
-        filename: ./target/app-1.0.0.jar
+        filename: ./target/bankapp-0.0.1-SNAPSHOT.jar
       
 
   gitleaks:
