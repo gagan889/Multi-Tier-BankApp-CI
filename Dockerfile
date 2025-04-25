@@ -11,7 +11,7 @@ WORKDIR /app
 RUN mkdir -p /app
 
 # Copy the JAR file from the local 'app' directory to the container's /app directory
-COPY  target/*.jar /app/app.jar
+COPY  ./target/*.jar /app/app.jar
 
 # Run the JAR file using the CMD command
 CMD ["java", "-jar", "/app/app.jar"]
