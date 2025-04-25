@@ -139,4 +139,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: user/app:latest
+        tags: kasturba998/app:latest
