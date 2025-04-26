@@ -193,7 +193,7 @@ jobs:
           from: gagan.gagan66@gmail.com
           content_type: text/plain
           body: |
-           body: |
+          
                 Workflow Summary: ${{ github.workflow }}
                 Repository: ${{ github.repository }}
                 Branch: master
