@@ -161,23 +161,15 @@ jobs:
 
     
   notify:
-  
     runs-on: ubuntu-latest
-    needs:  Run-docker_Image
+    needs: [Compile, Test, Package]
     if: always()
     steps:
-      - name: Calculate Success and Failure Rates
-        run: |
-          total=4
-          success=0
-          for outcome in "${{ needs.build.outputs.checkout_outcome }}" "${{ needs.build.outputs.tests_outcome }}" "${{ needs.build.outputs.build_outcome }}" "${{ needs.build.outputs.deploy_outcome }}"; do
-            if [ "$outcome" = "success" ]; then
-              success=$((success + 1))
-            fi
-          done
-          failure=$((total - success))
-          echo "SUCCESS_RATE=$((success * 100 / total))" >> $GITHUB_ENV
-          echo "FAILURE_RATE=$((failure * 100 / total))" >> $GITHUB_ENV
+      - name: Generate Job Summary
+        uses: austenstone/job-summary@v2.0
+        id: summary
+        with:
+          create-html: true
 
       - name: Send Email Notification
         uses: dawidd6/action-send-mail@v3
@@ -186,38 +178,8 @@ jobs:
           server_port: 465
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: GitHub Actions Workflow Summary - ${{ needs.build.result }}
+          subject: GitHub Actions Workflow Summary - ${{ github.workflow }}
           to: gagan.gagan66@gmail.com
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           content_type: text/html
-          body: |
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <style>
-                body { font-family: Arial, sans-serif; }
-                .status-success { color: green; }
-                .status-failure { color: red; }
-              </style>
-            </head>
-            <body>
-              <h2>Workflow Summary: ${{ github.workflow }}</h2>
-              <p><strong>Repository:</strong> ${{ github.repository }}</p>
-              <p><strong>Branch:</strong> ${{ github.ref_name }}</p>
-              <p><strong>Commit:</strong> ${{ github.sha }}</p>
-              <p><strong>Initiated by:</strong> ${{ github.actor }}</p>
-              <h3 class="status-${{ needs.build.result }}">
-                Status: 
-                ${{ needs.build.result == 'success' && '✅ Success' || '❌ Failure' }}
-              </h3>
-              <ul>
-                <li><strong>Checkout Repository:</strong> ${{ needs.build.outputs.checkout_outcome }}</li>
-                <li><strong>Run Tests:</strong> ${{ needs.build.outputs.tests_outcome }}</li>
-                <li><strong>Build Application:</strong> ${{ needs.build.outputs.build_outcome }}</li>
-                <li><strong>Deploy Application:</strong> ${{ needs.build.outputs.deploy_outcome }}</li>
-              </ul>
-              <p><strong>Success Rate:</strong> ${{ env.SUCCESS_RATE }}%</p>
-              <p><strong>Failure Rate:</strong> ${{ env.FAILURE_RATE }}%</p>
-              <p>For detailed logs, visit the <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">workflow run</a>.</p>
-            </body>
-            </html>
+          body: ${{ steps.summary.outputs.job-summary-html }}
