@@ -157,19 +157,40 @@ jobs:
 
       - name: Run Docker container
         run: docker run -p 8080:8080 -d "${{ secrets.DOCKERHUB_USERNAME }}/app:latest"
+    
+    
+    
+    
   notify:
+    
     runs-on: ubuntu-latest
-    needs: [Compile,Test,Package]
     if: always()
+    needs: [Compile, Test, Package, gitleaks, Trivy_Scan, sonarqube, docker_build_push, Run-docker_Image]
     steps:
-      - name: Send Plain Text Email Notification
+      - name: Set Notification Status
+        id: notification
+        run: |
+          if [[ "${{ needs.Compile.result }}" == "failure" || \
+                "${{ needs.Test.result }}" == "failure" || \
+                "${{ needs.Package.result }}" == "failure" || \
+                "${{ needs.gitleaks.result }}" == "failure" || \
+                "${{ needs.Trivy_Scan.result }}" == "failure" || \
+                "${{ needs.sonarqube.result }}" == "failure" || \
+                "${{ needs.docker_build_push.result }}" == "failure" || \
+                "${{ needs.Run-docker_Image.result }}" == "failure" ]]; then
+            echo "status=FAILURE" >> $GITHUB_OUTPUT
+          else
+            echo "status=SUCCESS" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send Email Notification
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
           username: ${{ secrets.GMAIL_USERNAME }}
           password: ${{ secrets.GMAIL_APP_PASSWORD }}
-          subject: GitHub Actions Workflow - ${{ job.status }}
+          subject: GitHub Actions Workflow - ${{ steps.notification.outputs.status }}
           to: gagan.gagan66@gmail.com
           from: gagan.gagan66@gmail.com
           content_type: text/plain
@@ -179,6 +200,6 @@ jobs:
             Branch: ${{ github.ref_name }}
             Commit: ${{ github.sha }}
             Initiated by: ${{ github.actor }}
-            Job Status: ${{ job.status }}
-            For detailed logs, visit the workflow run at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}.
-
+            Final Status: ${{ steps.notification.outputs.status }}
+            For detailed logs, visit the workflow run at:
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
