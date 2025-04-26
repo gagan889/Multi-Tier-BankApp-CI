@@ -161,7 +161,7 @@ jobs:
 
     
   notify:
-    needs: build
+  
     runs-on: ubuntu-latest
     if: always()
     steps:
