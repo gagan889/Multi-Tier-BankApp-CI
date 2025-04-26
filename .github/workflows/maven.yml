@@ -141,18 +141,22 @@ jobs:
         push: true
         tags: kasturba998/app:latest
 
-
-  run-docker-image:  
-    runs-on: self-hosted
+   
+  Run-docker_Image:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       - name: Pull Docker image
-        run: docker pull "${{ secrets.DOCKERHUB_USERNAME }}"/"${{ secrets.DOCKERHUB_USERNAME }}"/app:latest
+        run: docker pull "${{ secrets.DOCKERHUB_USERNAME }}/app:latest"
 
       - name: Run Docker container
-        run: docker run -p 8000:8000 -d "${{ secrets.DOCKERHUB_USERNAME }}"/"${{ secrets.DOCKERHUB_USERNAME }}"/app:latest
+        run: docker run -p 8080:8080 -d "${{ secrets.DOCKERHUB_USERNAME }}/app:latest"
+
 
     
 
