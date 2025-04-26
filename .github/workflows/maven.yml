@@ -177,30 +177,33 @@ jobs:
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           content_type: text/html
           body: |
-            <h2>Workflow Summary: ${{ github.workflow }}</h2>
-            <p><strong>Repository:</strong> ${{ github.repository }}</p>
-            <p><strong>Branch:</strong> ${{ github.ref_name }}</p>
-            <p><strong>Commit:</strong> ${{ github.sha }}</p>
-            <p><strong>Initiated by:</strong> ${{ github.actor }}</p>
-            <h3>Job Status: ${{ job.status }}</h3>
-            <ul>
-              <li><strong>Checkout Repository:</strong> Completed</li>
-              <li><strong>Run Tests:</strong> ${{ steps.tests.outcome }}</li>
-              <li><strong>Build Application:</strong> ${{ steps.build.outcome }}</li>
-              <li><strong>Deploy Application:</strong> ${{ steps.deploy.outcome }}</li>
-            </ul>
-            <p>For detailed logs, visit the <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">workflow run</a>.</p>
+                  <!DOCTYPE html>
+                  <html>
+                  <head>
+                  <style>
+                      body { font-family: Arial, sans-serif; }
+                      h2 { color: #2e6c80; }
+                      ul { list-style-type: none; padding: 0; }
+                      li { margin: 5px 0; }
+                  </style>
+                  </head>
+                  <body>
+                    <h2>Workflow Summary: ${{ github.workflow }}</h2>
+                    <p><strong>Repository:</strong> ${{ github.repository }}</p>
+                    <p><strong>Branch:</strong> ${{ github.ref_name }}</p>
+                    <p><strong>Commit:</strong> ${{ github.sha }}</p>
+                    <p><strong>Initiated by:</strong> ${{ github.actor }}</p>
+                    <h3>Job Status: ${{ job.status }}</h3>
+                  <ul>
+                    <li><strong>Checkout Repository:</strong> ${{ steps.checkout.outcome }}</li>
+                    <li><strong>Run Tests:</strong> ${{ steps.tests.outcome }}</li>
+                    <li><strong>Build Application:</strong> ${{ steps.build.outcome }}</li>
+                    <li><strong>Deploy Application:</strong> ${{ steps.deploy.outcome }}</li>
+                   </ul>
+                    <p>For detailed logs, visit the <a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">workflow run</a>.</p>
+                    </body>
+                  </html>
 
-    
-
-
-
-
-
-
-
-
-    
 
 
 
