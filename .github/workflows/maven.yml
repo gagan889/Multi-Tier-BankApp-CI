@@ -33,7 +33,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: testing the code
-      run: mvn test -Dmaven.test.skip=true
+      run: mvn test 
 
   Package:
     runs-on: ubuntu-latest
