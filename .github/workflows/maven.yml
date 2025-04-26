@@ -195,11 +195,12 @@ jobs:
           from: gagan.gagan66@gmail.com
           content_type: text/plain
           body: |
-            Workflow Summary: ${{ github.workflow }}
-            Repository: ${{ github.repository }}
-            Branch: ${{ github.ref_name }}
-            Commit: ${{ github.sha }}
-            Initiated by: ${{ github.actor }}
-            Final Status: ${{ steps.notification.outputs.status }}
-            For detailed logs, visit the workflow run at:
-            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+           body: |
+                Workflow Summary: ${{ github.workflow }}
+                Repository: ${{ github.repository }}
+                Branch: master
+                Commit: ${{ github.sha }}
+                Initiated by: ${{ github.actor }} at ${{ github.event.head_commit.timestamp }}
+                Job Status: <span style="color:${{ steps.notification.outputs.status == 'SUCCESS' && 'green' || 'red' }};">${{ steps.notification.outputs.status }}</span>
+                For detailed logs, visit the workflow run at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
