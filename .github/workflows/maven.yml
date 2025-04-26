@@ -103,7 +103,7 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
         
-  docker:
+  docker_build_push:
     runs-on: ubuntu-latest
     needs: Package
     steps:
@@ -145,8 +145,9 @@ jobs:
   Run-docker_Image:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
+    needs: docker_build_push
     steps:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
