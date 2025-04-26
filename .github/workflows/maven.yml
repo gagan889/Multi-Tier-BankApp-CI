@@ -157,36 +157,28 @@ jobs:
 
       - name: Run Docker container
         run: docker run -p 8080:8080 -d "${{ secrets.DOCKERHUB_USERNAME }}/app:latest"
-
-
-    
   notify:
     runs-on: ubuntu-latest
-    needs: [Compile, Test, Package]
+    needs: [Compile,Test,Package]
     if: always()
     steps:
-      - name: Generate Job Summary
-        uses: austenstone/job-summary@v2.0
-        id: summary
-        with:
-          create-html: true
-
-      - name: Send Email Notification
+      - name: Send Plain Text Email Notification
         uses: dawidd6/action-send-mail@v3
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          subject: GitHub Actions Workflow Summary - ${{ github.workflow }}
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_APP_PASSWORD }}
+          subject: GitHub Actions Workflow - ${{ job.status }}
           to: gagan.gagan66@gmail.com
-          from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
-          content_type: text/html
+          from: gagan.gagan66@gmail.com
+          content_type: text/plain
           body: |
-                 Workflow Summary: ${{ github.workflow }}
-                 Repository: ${{ github.repository }}
-                 Branch: master
-                 Commit: ${{ github.sha }}
-                 Initiated by: ${{ github.actor }}
-                 Job Status: ${{ job.status }}
-                 For detailed logs, visit the workflow run at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}.
+            Workflow Summary: ${{ github.workflow }}
+            Repository: ${{ github.repository }}
+            Branch: ${{ github.ref_name }}
+            Commit: ${{ github.sha }}
+            Initiated by: ${{ github.actor }}
+            Job Status: ${{ job.status }}
+            For detailed logs, visit the workflow run at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}.
+
