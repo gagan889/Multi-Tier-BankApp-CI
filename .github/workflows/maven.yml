@@ -182,4 +182,11 @@ jobs:
           to: gagan.gagan66@gmail.com
           from: GitHub Actions <${{ secrets.EMAIL_USERNAME }}>
           content_type: text/html
-          body: ${{ steps.summary.outputs.job-summary-html }}
+          body: |
+                 Workflow Summary: ${{ github.workflow }}
+                 Repository: ${{ github.repository }}
+                 Branch: master
+                 Commit: ${{ github.sha }}
+                 Initiated by: ${{ github.actor }}
+                 Job Status: ${{ job.status }}
+                 For detailed logs, visit the workflow run at ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}.
