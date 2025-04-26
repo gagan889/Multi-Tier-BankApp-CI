@@ -105,7 +105,7 @@ jobs:
         
   docker_build_push:
     runs-on: ubuntu-latest
-    needs: Package
+    needs:  sonarqube
     steps:
     - uses: actions/checkout@v4
 
@@ -143,12 +143,9 @@ jobs:
 
    
   Run-docker_Image:
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
-    needs: docker_build_push
-    steps:
+     runs-on: ubuntu-latest
+     needs: docker_build_push
+     steps:
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
@@ -164,6 +161,7 @@ jobs:
   notify:
     
     runs-on: ubuntu-latest
+    
     if: always()
     needs: [Compile, Test, Package, gitleaks, Trivy_Scan, sonarqube, docker_build_push, Run-docker_Image]
     steps:
@@ -201,6 +199,6 @@ jobs:
                 Branch: master
                 Commit: ${{ github.sha }}
                 Initiated by: ${{ github.actor }} at ${{ github.event.head_commit.timestamp }}
-                Job Status: <span style="color:${{ steps.notification.outputs.status == 'SUCCESS' && 'green' || 'red' }};">${{ steps.notification.outputs.status }}</span>
+                Job Status: ${{ steps.notification.outputs.status }}
                 For detailed logs, visit the workflow run at: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
